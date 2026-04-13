@@ -324,35 +324,25 @@ export default function AdminDashboard() {
 
   const fetchData = async () => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-
-      const statsRes = await fetch(`${apiUrl}/api/admin/stats/overview`, {
-        headers: { 'Authorization': `Bearer ${token}` },
-      });
+      const statsRes = await fetch('/api/admin/stats/overview');
       if (statsRes.ok) {
         const statsData = await statsRes.json();
         setStats(statsData);
       }
 
-      const riskRes = await fetch(`${apiUrl}/api/admin/stats/risk-distribution`, {
-        headers: { 'Authorization': `Bearer ${token}` },
-      });
+      const riskRes = await fetch('/api/admin/stats/risk-distribution');
       if (riskRes.ok) {
         const riskData = await riskRes.json();
         setRiskDist(riskData);
       }
 
-      const summaryRes = await fetch(`${apiUrl}/api/admin/stats/dimension-summary`, {
-        headers: { 'Authorization': `Bearer ${token}` },
-      });
+      const summaryRes = await fetch('/api/admin/stats/dimension-summary');
       if (summaryRes.ok) {
         const summaryData = await summaryRes.json();
         setDimensionSummary(summaryData);
       }
 
-      const responsesRes = await fetch(`${apiUrl}/api/admin/reports/responses`, {
-        headers: { 'Authorization': `Bearer ${token}` },
-      });
+      const responsesRes = await fetch('/api/admin/reports/responses');
       if (responsesRes.ok) {
         const responsesData = await responsesRes.json();
         setResponses(responsesData);
@@ -372,14 +362,10 @@ export default function AdminDashboard() {
 
   const handleExportCSV = async () => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const response = await fetch(`${apiUrl}/api/admin/reports/responses`, {
-        method: 'GET',
-        headers: { 'Authorization': `Bearer ${token}` },
-      });
+      const response = await fetch('/api/admin/reports/responses');
 
       const data = await response.json();
-      
+
       const headers = ['id', 'answers', 'completion_time_seconds', 'ip_address', 'user_agent', 'submitted_at'];
       const csvContent = [
         headers.join(','),
@@ -406,11 +392,7 @@ export default function AdminDashboard() {
 
   const handleExportJSON = async () => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const response = await fetch(`${apiUrl}/api/admin/reports/responses`, {
-        method: 'GET',
-        headers: { 'Authorization': `Bearer ${token}` },
-      });
+      const response = await fetch('/api/admin/reports/responses');
 
       const data = await response.json();
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
